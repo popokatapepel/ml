@@ -22,7 +22,7 @@ p = zeros(size(X, 1), 1);
 %
 
 for i=1:m
-  a1=X(1,:)';
+  a1=X(i,:)';
   z2=Theta1*[1;a1];
   a2=sigmoid(z2);
   z3=Theta2*[1;a2];
