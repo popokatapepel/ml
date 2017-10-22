@@ -61,15 +61,26 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+y0=zeros(num_labels,1);
+J=0;
+for i=1:m
+  a1=X(i,:)';
+  z2=Theta1*[1;a1];
+  a2=sigmoid(z2);
+  z3=Theta2*[1;a2];
+  a3=sigmoid(z3);
+  %hypothesis for this testcase equalse the last network layer
+  h=a3;
+  %define targetvektor from desired output
+  yv=y0;
+  yv(y(i))=1;
+  J+=sum(-yv.*log(h)-(1-yv).*log(1-h));
+end
+J=J/m;
 
+reg=lambda/2/m*(sum(sum(Theta1(:,2:end).^2))+sum(sum(Theta2(:,2:end).^2)));
 
-
-
-
-
-
-
-
+J+=reg;
 
 
 
