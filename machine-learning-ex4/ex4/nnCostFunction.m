@@ -90,8 +90,12 @@ reg=lambda/2/m*(sum(sum(Theta1(:,2:end).^2))+sum(sum(Theta2(:,2:end).^2)));
 
 J+=reg;
 
-Theta1_grad=(1/m).*Delta1;
-Theta2_grad=(1/m).*Delta2;
+reg=lambda/m.*Theta1;
+reg(:,1)=0;
+Theta1_grad=(1/m).*Delta1+reg;
+reg=lambda/m.*Theta2;
+reg(:,1)=0;
+Theta2_grad=(1/m).*Delta2+reg;
 
 
 
