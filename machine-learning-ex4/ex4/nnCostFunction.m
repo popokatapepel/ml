@@ -61,17 +61,41 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+y0=zeros(num_labels,1);
 
+J=0;
+Delta1=Theta1_grad;
+Delta2=Theta2_grad;
+for i=1:m
+  a1=[1;X(i,:)'];
+  z2=Theta1*a1;
+  a2=[1;sigmoid(z2)];
+  z3=Theta2*a2;
+  a3=sigmoid(z3);
+  %hypothesis for this testcase equalse the last network layer
+  h=a3;
+  %define targetvektor from desired output
+  yv=y0;
+  yv(y(i))=1;
+  %evaluate deltas for backward prop algo
+  d3=a3-yv;
+  d2=Theta2'*d3.*[1;sigmoidGradient(z2)];
+  Delta2=Delta2+d3*a2';
+  Delta1=Delta1+d2(2:size(d2,1))*a1';
+  J+=sum(-yv.*log(h)-(1-yv).*log(1-h));
+end
+J=J/m;
 
+reg=lambda/2/m*(sum(sum(Theta1(:,2:end).^2))+sum(sum(Theta2(:,2:end).^2)));
 
+J+=reg;
 
-
-
-
-
-
-
-
+reg=lambda/m.*Theta1;
+reg(:,1)=0;
+Theta1_grad=(1/m).*Delta1+reg;
+reg=lambda/m.*Theta2;
+reg(:,1)=0;
+Theta2_grad=(1/m).*Delta2+reg;
 
 
 
