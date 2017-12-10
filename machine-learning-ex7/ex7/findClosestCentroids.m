@@ -22,6 +22,17 @@ idx = zeros(size(X,1), 1);
 %
 
 
+for i=1:size(X,1)
+  min=inf;
+  for j=1:size(centroids,1)
+    n=norm(X(i,:)-centroids(j,:));
+    if min>n
+      min=n;
+      idx(i)=j;
+    end
+  end
+end
+
 
 
 
