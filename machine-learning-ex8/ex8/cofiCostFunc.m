@@ -42,12 +42,41 @@ Theta_grad = zeros(size(Theta));
 
 
 
+D=(X*Theta'-Y);
+J=0;
+for i=1:size(D,1)
+  for j=1:size(D,2)
+    if R(i,j)==1
+      J+=D(i,j).^2;
+    end
+  end
+end
+J/=2;
+J+=lambda/2*(sum(sum(Theta.^2))+sum(sum(X.^2)));%regularization
 
+for i=1:size(X,1)
+  for k=1:size(X,2)
+    s=0;
+    for j=1:size(Theta,1)
+      if R(i,j)==1
+        s+=(Theta(j,:)*X(i,:)'-Y(i,j))*Theta(j,k);
+      end
+    end
+    X_grad(i,k)=s+lambda*X(i,k);
+  end
+end
 
-
-
-
-
+for j=1:size(Theta,1)
+  for k=1:size(Theta,2)
+    s=0;
+    for i=1:size(X,1)
+      if R(i,j)==1
+        s+=(Theta(j,:)*X(i,:)'-Y(i,j))*X(i,k);
+      end
+    end
+    Theta_grad(j,k)=s+lambda*Theta(j,k);
+  end
+end
 
 
 
